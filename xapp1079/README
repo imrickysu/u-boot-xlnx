@@ -1,0 +1,19 @@
+# Xapp1079 U-boot Modification
+
+## Warranty
+This modification is only for personal use with no warranty.
+
+
+## Test Flow
+1. $ make zynq_zc70x_config
+2. $ make
+3. $ cp u-boot xapp1079/u-boot.elf
+4. Modify bootimage.sh and bootimage.bif to fit your environment
+5. $ xapp1079/bootimage.sh
+6. Copy boot.bin to SD card and set ZC70x boot mode to SD card
+7. type "help" in u-boot console, see the additional command "amp"
+8. type "amp" in u-boot console, see CPU0 and CPU1 take turns to print hello world
+
+## More Info
+Xapp1079 Latest Information:
+http://www.wiki.xilinx.com/XAPP1079+Latest+Information

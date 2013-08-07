@@ -25,6 +25,10 @@ include $(TOPDIR)/config.mk
 
 LIB	= $(obj)libcommon.o
 
+# TODO: add ifdef and config in zynq_zc70x.h
+# AMP command
+COBJS-y += cmd_amp.o
+
 # core
 ifndef CONFIG_SPL_BUILD
 COBJS-y += main.o

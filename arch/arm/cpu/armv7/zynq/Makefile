@@ -28,15 +28,23 @@ include $(TOPDIR)/config.mk
 
 LIB	= $(obj)lib$(SOC).o
 
+SOBJS :=  translation_table.o
+
 COBJS-y	:= timer.o
 COBJS-y	+= cpu.o
 COBJS-y	+= ddrc.o
 COBJS-y	+= slcr.o
 
+COBJS-y += xil_exception.o
+COBJS-y += xil_io.o
+COBJS-y += xil_mmu.o
+COBJS-y += xil_assert.o
+COBJS-y += xil_cache.o
+
 COBJS	:= $(COBJS-y)
 
-SRCS	:= $(COBJS:.o=.c)
-OBJS	:= $(addprefix $(obj),$(COBJS))
+SRCS	:= $(SOBJS:.o=.S) $(COBJS:.o=.c)
+OBJS	:= $(addprefix $(obj),$(COBJS) $(SOBJS))
 
 all:	$(obj).depend $(LIB)
 
