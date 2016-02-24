@@ -311,6 +311,7 @@ static int zynq_gem_setup_mac(struct eth_device *dev)
 static int zynq_gem_init(struct eth_device *dev, bd_t * bis)
 {
 	u32 i;
+	u16 phyreg;
 	unsigned long __maybe_unused clk_rate = 0;
 	struct phy_device *phydev;
 	struct zynq_gem_regs *regs = (struct zynq_gem_regs *)dev->iobase;
@@ -388,11 +389,19 @@ static int zynq_gem_init(struct eth_device *dev, bd_t * bis)
 		priv->init++;
 	}
 
-	phy_detection(dev);
+	if (!priv->emio)
+		phy_detection(dev);
 
 	/* interface - look at tsec */
 	phydev = phy_connect(priv->bus, priv->phyaddr, dev,
 			     priv->interface);
+
+	/* Set Isolate bit for normal operation i.e Electrically Isolate
+	   PHY from GMII incase of 1000BASE-X Phy */
+	if (priv->emio) {
+		phyread(dev, priv->phyaddr, MII_BMCR, &phyreg);
+		phywrite(dev, priv->phyaddr, 0, (phyreg & 0xFBFF));
+	}
 
 	phydev->supported = supported | ADVERTISED_Pause |
 			    ADVERTISED_Asym_Pause;
